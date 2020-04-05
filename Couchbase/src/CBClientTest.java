@@ -11,6 +11,7 @@ import com.couchbase.client.java.query.N1qlQuery;
 
 public class CBClientTest {
 
+	public static final String BUCKET = "beer-sample"; 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -26,7 +27,7 @@ public class CBClientTest {
 		
         Cluster cluster = CouchbaseCluster.create(env, "localhost?timeout.kvTimeout=200s");
         cluster.authenticate( "get", "12345678");
-        Bucket bucket = cluster.openBucket("travel-sample");
+        Bucket bucket = cluster.openBucket(BUCKET);
 
         Bucket bucket1 = cluster.openBucket("uncompressed");
         
@@ -38,14 +39,14 @@ public class CBClientTest {
 	
 	public void getAll(final Bucket bucket, final Bucket bucket1) {
 		//delete from uncompressed where meta().id > 0 and meta().expiration > 0
-	    String queryStr = "SELECT meta().id as dockey,* FROM `travel-sample` order by meta().id asc";
+	    String queryStr = "SELECT meta().id as dockey,* FROM `"+BUCKET+"` order by meta().id asc";
 	    bucket.async().query(N1qlQuery.simple(queryStr))
 	            .flatMap(AsyncN1qlQueryResult::rows)
 	            .toBlocking()
 	            .forEach(row ->  
 	            	{ 
 	            		System.out.println("hello " + row.value());
-	            		bucket1.insert(JsonDocument.create(row.value().getString("dockey"), row.value().getObject("travel-sample")));
+	            		bucket1.insert(JsonDocument.create(row.value().getString("dockey"), row.value().getObject(BUCKET)));
 	            	}
 	    );
 	}	
