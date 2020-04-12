@@ -17,11 +17,13 @@ public class CBClientTest {
 //		Cluster cluster = Cluster.connect("localhost?timeout.kvTimeout=200s", "get", "12345678");
 //		Bucket bucket = cluster.bucket("travel-sample");
 //		Collection collection = bucket.defaultCollection();
+		String CB_KEYSTORE = ".keystore";
+		String CB_KEYSTORE_PW = "changeit";
 		CouchbaseEnvironment env = DefaultCouchbaseEnvironment
 			    .builder()
 			    .sslEnabled(true)
-			    .sslKeystoreFile(".keystore")
-			    .sslKeystorePassword("changeit")
+			    .sslKeystoreFile(CB_KEYSTORE)
+			    .sslKeystorePassword(CB_KEYSTORE_PW)
 			    .build();
 		
         Cluster cluster = CouchbaseCluster.create(env, "localhost?timeout.kvTimeout=200s");
