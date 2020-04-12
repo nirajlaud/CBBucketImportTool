@@ -25,8 +25,13 @@ public class CBClientTest {
 			    .sslKeystorePassword("changeit")
 			    .build();
 		
-        Cluster cluster = CouchbaseCluster.create(env, "localhost?timeout.kvTimeout=200s");
-        cluster.authenticate( "get", "12345678");
+		final String CB_HOST = "localhost?timeout.kvTimeout=200s";
+		final String CB_UN = "get";
+		final String CB_PW = "12345678";
+		
+		
+        Cluster cluster = CouchbaseCluster.create(env, CB_HOST);
+        cluster.authenticate(CB_UN, CB_PW);
         Bucket bucket = cluster.openBucket(BUCKET);
 
         Bucket bucket1 = cluster.openBucket("uncompressed");
